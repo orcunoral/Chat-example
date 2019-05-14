@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Chat Uygulaması</title>
+        <style>
+            body {
+                background:url(../images/chatbackground.jpg) ;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .avatar {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+            }
+
+        </style>
+        <script type="text/javascript">
+
+            var jsonforlogout;
+            var websocket = new WebSocket("ws://192.168.1.32:12632/son");
+            var uzantı = parent.document.URL.substring(parent.document.URL.indexOf('=') + 1, parent.document.URL.length);
+            var img = uzantı.substring(uzantı.indexOf('?') + 1, uzantı.length);
+            var id = uzantı.substring(0, uzantı.indexOf('?'));
+            websocket.onmessage = function processMessage(message)
+            {
+                var jsonData = JSON.parse(message.data);
+                jsonforlogout = jsonData;
+                console.log(jsonData);
+                if (jsonData.private != null) {
+                    var parse = jsonData.private.split('@');
+                    console.log("alert dialog cikacak + " + parse[parse.length - 1] + " " + parse[parse.length - 2]);
+                    if (confirm(parse[parse.length - 2] + ' seninle mesajlasmak istiyor senin nickin = ' + parse[parse.length - 1])) {
+                        messagesTextArea.value += parse[0] + "\n";
+                        websocket.send("@"+parse[parse.length - 1]+"@"+parse[parse.length - 2] + "@accept" + "@"+parse[0]);
+
+                    } else {
+                        // Do nothing!
+                    }
+                }
+                if (jsonData.message != null)
+                    messagesTextArea.value += jsonData.message + "\n";
+                
+                if (jsonData.users != null)
+                {
+                    var usercombo = document.getElementById("usercombo");       //combo
+                    usercombo.length = 0;
+                    usersTextArea.value = "";
+                    var i = 0;
+                    while (i < jsonData.users.length)
+                    {
+                        usersTextArea.value += jsonData.users[i] + "\n";
+                        //combo
+                        var comboitem = document.createElement("option");
+                        comboitem.text = jsonData.users[i];//"utsav";//
+                        comboitem.value = jsonData.users[i];//"10"; 
+                        usercombo.options.add(comboitem);
+                        i++;
+                    }
+                    var comboitem = document.createElement("option");
+                    comboitem.text = "all";//"utsav";//
+                    comboitem.value = "all";//"10"; 
+                    usercombo.options.add(comboitem);
+                }
+                if (jsonData.offlineUsers != null)
+                {
+                    console.log('girdi');
+                    usersOfflineTextArea.value = "";
+                    var i = 0;
+                    while (i < jsonData.offlineUsers.length)
+                    {
+                        usersOfflineTextArea.value += jsonData.offlineUsers[i] + "\n";
+                        i++;
+                    }
+                }
+            }
+
+            function closeConnection() {
+                websocket.close();
+                window.location = "http://192.168.1.26:8080";
+            }
+
+            var j = 0;
+            function sendMessage() {
+                var e = document.getElementById("usercombo");
+                var strUser = e.options[e.selectedIndex].text;
+                if (j == 0) {
+                    document.getElementById("userImg").src = img;
+                    websocket.send(id + "@" + strUser);
+                    j = j + 1;
+                } else {
+                    websocket.send(messageText.value + "@" + strUser);
+                    messageText.value = "";
+                }
+            }
+
+        </script>
+
+    </head>
+    <body>
+
+        <div class="message-box" align="center" >
+            <div align="left">
+                <img id="userImg" src="images/img_avatar.png" alt="Avatar" class="avatar"><image>
+            </div>
+            <div align= "bottom" style="color:yellow;font-size: 8mm;">
+                Yerli Whatsapp
+            </div>
+            
+            <div class="col-9">
+                <textarea id="usersTextArea" readonly="readonly" rows="15" cols="10" style="color: blue;font-size:15pt;text-align: center;"></textarea>
+                <textarea id="usersOfflineTextArea" readonly="readonly" rows="15" cols="10" style="color: red;font-size:15pt;text-align: center;"></textarea>
+                <textarea id="messagesTextArea" readonly="readonly" rows="15" cols="70" style="color: red;font-size:15pt;" ></textarea>                  
+            </div>
+            <br>
+            <input type="text" id="messageText"  size="100" onkeydown=" if (event.keyCode == 13) {
+                        sendMessage();
+                    }">
+            <input type="button" value="send" onclick="sendMessage();">
+            <input type="button" value="close" onclick="closeConnection();">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            To:<select id="usercombo" name="usercombo" >
+                <option value="all">all</option>
+            </select>
+        </div>
+    </body>
+</html>

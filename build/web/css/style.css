@@ -1,0 +1,63 @@
+body {
+    background:url(../images/1.jpg) ;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#login-box {
+    margin-left: auto;
+    margin-right: auto;
+    width:350px;
+    height: 250px;
+    padding: 58px 76px 0 76px;
+    color: #ebebeb;
+    font-size: 15px;
+    font-family:calibri;
+    background: url(../images/login-arka-mavi.png) no-repeat left top;
+}
+
+#login-box h2 {
+    padding:0;
+    margin:0;
+    color: #ebebeb;
+    font-size: 44px;
+    font-weight:700;
+    font-family:ariel;
+}
+
+#login-box-name {
+    float: left;
+    display:inline;
+    width:80px;
+    text-align: right;
+    padding: 14px 10px 0 0;
+    margin:0 0 7px 0;
+}
+
+#login-box-field {
+    float: left;
+    display:inline;
+    width:230px;
+    margin:0;
+    margin:0 0 7px 0;
+}
+
+.form-login {
+    width: 205px;
+    padding: 10px 4px 6px 3px;
+    border: 1px solid #5f000b;
+    background-color:#a80014;
+    font-size: 16px;
+    color: #ebebeb;
+}
+
+.login-box-options {
+    clear:both;
+    padding-left:87px;
+    font-size: 11px;
+}
+
+.login-box-options a {
+    color: #ebebeb;
+    font-size: 11px;
+}

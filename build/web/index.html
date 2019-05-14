@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Giris</title>
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <style>
+            .avatar {
+                vertical-align: middle;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                float: left;
+            }
+            .dosya {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                float: left;
+            }
+        </style>
+        <script>
+            var link = "http://192.168.1.32:12632/chatapp.html?nick=";
+            var imgUrl = "images/img_avatar.png";
+            function chng()
+             {
+             var typ = document.getElementById("fiile").files[0].name;
+             alert(typ);
+             document.getElementById("resim").src = "images/" + typ;
+             imgUrl = "images/" + typ;
+             }
+             
+           /* function preview_image(event)
+            {
+                var reader = new FileReader();
+                reader.onload = function ()
+                {
+                    var output = document.getElementById('resim');
+                    output.src = reader.result;
+                     alert(reader.result);
+                }
+                
+                reader.readAsDataURL(event.target.files[0]);
+               
+            }*/
+        </script>
+    </head>
+
+    <body>
+
+        <div class="login-box" style="padding: 100px 0 0px 100px;">
+
+            <div id="login-box" >
+                <H2>Chat Giriş Ekranı</H2>
+                <!-- Kullanıcı adı -->
+                <div id="login-box-name" style="margin-top:20px;">
+                    Kullanıcı Adı:
+                </div>
+                <div id="login-box-field" style="margin-top:20px;">
+                    <input id="nickname" class="form-login" type="text" title="Kullanıcı Adı" value="" size="30" maxlength="2048" />
+                </div>
+
+                <br>               
+                <a id="giris" onclick="location.href = link + nickname.value + '?' + imgUrl" target="_self">
+                    <img src="images/login-btn.png" width="103" height="42" style="margin-left:90px;" />
+                </a>
+
+                <img src="images/img_avatar.png" alt="Avatar" class="avatar" id="resim">
+                <input class="dosya" type="file" id="fiile" accept="image/*" onchange="chng()">
+            </div> 
+            <!-- #login-box bitiş -->
+
+    </body>
+
+</html>
